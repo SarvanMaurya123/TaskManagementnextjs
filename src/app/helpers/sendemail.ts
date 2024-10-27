@@ -1,9 +1,14 @@
 import nodemailer from 'nodemailer';
 
-const sendEmail = async ({ email, subject, message }) => {
+interface EmailOptions {
+    email: string;
+    subject: string;
+    message: string;
+}
+const sendEmail = async ({ email, subject, message }: EmailOptions) => {
     // Create a transporter using Gmail's SMTP server
     const transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        service: process.env.SERVICE,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.MAILESEND, // Replace with your email password or app-specific password
