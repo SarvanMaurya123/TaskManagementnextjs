@@ -9,14 +9,14 @@ import '../signup/sign.css';
 const validateEmail = (email: any) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validatePassword = (password: any) => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,12}$/.test(password);
 
-// Feedback Message Component
-const FeedbackMessage = ({ message, type }) => {
-    return (
-        <p className={`text-center ${type === 'error' ? 'text-red-600' : 'text-green-600'} mb-4`}>
-            {message}
-        </p>
-    );
-};
+// // Feedback Message Component
+// const FeedbackMessage = ({ message, type }) => {
+//     return (
+//         <p className={`text-center ${type === 'error' ? 'text-red-600' : 'text-green-600'} mb-4`}>
+//             {message}
+//         </p>
+//     );
+// };
 
 const AdminSignup = () => {
     const [username, setUsername] = useState("");
@@ -92,8 +92,8 @@ const AdminSignup = () => {
                         "Sign Up Admin"
                     )}
                 </h1>
-                {error && <FeedbackMessage message={error} type="error" />}
-                {success && <FeedbackMessage message={success} type="success" />}
+                {/* {error && <FeedbackMessage message={error} type="error" />}
+                {success && <FeedbackMessage message={success} type="success" />} */}
 
                 <div className="mb-5">
                     <label htmlFor="username" className="block text-gray-800 text-sm font-semibold mb-2">Username</label>
