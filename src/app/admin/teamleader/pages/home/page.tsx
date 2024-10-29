@@ -1,6 +1,5 @@
 'use client'
 import TeamLeaderAdminMainLayout from "@/app/components/teamleader/TeamLreaderadminLayout"
-import GetTeams from "../component/GetTeam"
 
 
 
@@ -9,7 +8,7 @@ export default async function () {
     return (<>
         <TeamLeaderAdminMainLayout>
             <div>
-                <GetTeams />
+                <h1>This is Home Page</h1>
             </div>
         </TeamLeaderAdminMainLayout>
     </>)

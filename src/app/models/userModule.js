@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
 
     department: {
         type: String,
-        enum: ['Developer', 'Designer', 'Tester', 'Markating', 'Others'],
+        enum: ['Developer', 'Designer', 'Tester', 'Marketing', 'Others'],
         default: 'Developer',
     },
 

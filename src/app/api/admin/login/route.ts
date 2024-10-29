@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         };
 
         // Generate JWT token
-        const token = await jwt.sign(tokenData, process.env.SECRET_KEY!, { expiresIn: '1hr' });
+        const token = await jwt.sign(tokenData, process.env.SECRET_KEY!, { expiresIn: '9hr' });
 
         const response = NextResponse.json({ message: "Login successfully!", success: true });
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: true,
-            expires: new Date(Date.now() + 60 * 60 * 1000) // 1 hour expiry
+            expires: new Date(Date.now() + 9 * 60 * 60 * 1000) // 9 hours expiry
         });
 
         return response;
