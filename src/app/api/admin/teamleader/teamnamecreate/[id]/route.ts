@@ -1,12 +1,12 @@
 // src/app/api/admin/teamleader/teamnamecreate/[id]/route.ts
-import Team from '@/app/models/Team'; // Adjust the import path as necessary
+import Teams from '@/app/models/Team'; // Adjust the import path as necessary
 import { NextResponse } from 'next/server';
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
     const { id } = params;
 
     try {
-        const deletedTeam = await Team.findByIdAndDelete(id);
+        const deletedTeam = await Teams.findByIdAndDelete(id);
         if (!deletedTeam) {
             return NextResponse.json({ error: 'Team not found.' }, { status: 404 });
         }

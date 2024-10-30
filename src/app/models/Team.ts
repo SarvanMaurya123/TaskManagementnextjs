@@ -54,5 +54,5 @@ const teamSchema = new Schema<ITeam>({
     members: [memberSchema], // Change members to use memberSchema
 }, { timestamps: true });
 
-const Team = mongoose.models.Team || mongoose.model<ITeam>('Team', teamSchema);
-export default Team;
+const Teams = mongoose.models.Teams || mongoose.model<ITeam>('Teams', teamSchema);
+export default Teams;

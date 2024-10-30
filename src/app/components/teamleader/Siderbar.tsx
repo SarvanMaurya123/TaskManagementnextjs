@@ -22,8 +22,10 @@ export default function TeamLeaderSidebar() {
     const [isOpen, setIsOpen] = useState(true);
     const router = useRouter();
 
+    // Function to toggle the sidebar open/closed state
     const toggleSidebar = () => setIsOpen(!isOpen);
 
+    // Define menu items and secondary items for navigation
     const menuItems = [
         { name: 'Home', icon: Home, href: '/admin/teamleader/pages/home' },
         { name: 'Dashboard', icon: LayoutDashboard, href: '/admin/teamleader/pages/dashboard' },
@@ -36,6 +38,7 @@ export default function TeamLeaderSidebar() {
         { name: 'Settings', icon: Settings, href: '/settings' },
     ];
 
+    // Function to handle logout
     const logout = async () => {
         try {
             await axios.get('/api/admin/logout/');
@@ -80,11 +83,10 @@ export default function TeamLeaderSidebar() {
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.name} className="mb-2">
-                                <Link href={item.href} passHref>
+                                <Link href={item.href}>
                                     <button
                                         onClick={() => setActiveItem(item.name)}
-                                        className={`flex items-center w-full px-4 py-2 text-left transition-colors rounded-lg ${activeItem === item.name ? 'bg-purple-600 text-white' : 'hover:bg-gray-800 text-gray-300'
-                                            }`}
+                                        className={`flex items-center w-full px-4 py-2 text-left transition-colors rounded-lg ${activeItem === item.name ? 'bg-purple-600 text-white' : 'hover:bg-gray-800 text-gray-300'}`}
                                     >
                                         <item.icon size={25} className="mr-4" />
                                         {isOpen && item.name}
@@ -100,7 +102,7 @@ export default function TeamLeaderSidebar() {
                         <ul>
                             {secondaryItems.map((item) => (
                                 <li key={item.name} className="mb-2">
-                                    <Link href={item.href} passHref>
+                                    <Link href={item.href}>
                                         <button className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-800 transition-colors rounded-lg">
                                             <item.icon size={20} className="mr-4" />
                                             {item.name}

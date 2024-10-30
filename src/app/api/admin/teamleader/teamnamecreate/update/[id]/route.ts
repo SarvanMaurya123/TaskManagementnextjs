@@ -1,6 +1,6 @@
 // src/app/api/admin/teamleader/[id]/route.ts
 import { NextResponse } from 'next/server';
-import Team from '@/app/models/Team'; // Adjust the path to your model
+import Teams from '@/app/models/Team'; // Adjust the path to your model
 import { connect } from '@/app/dbConfig/dbConfig';
 
 const connectDB = async () => {
@@ -14,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     await connectDB();
 
     try {
-        const team = await Team.findById(id);
+        const team = await Teams.findById(id);
         if (!team) {
             return NextResponse.json({ message: 'Team not found' }, { status: 404 });
         }
@@ -32,7 +32,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     await connectDB();
 
     try {
-        const updatedTeam = await Team.findByIdAndUpdate(
+        const updatedTeam = await Teams.findByIdAndUpdate(
             id,
             { projectname, description },
             { new: true, runValidators: true }

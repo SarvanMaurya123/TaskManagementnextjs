@@ -4,9 +4,10 @@ import axios from 'axios';
 interface UpdateTeamProps {
     teamId: string;
     onUpdateSuccess: () => void; // Callback to refresh the list after update
+    onCancel: () => void; // Callback for cancel action
 }
 
-const UpdateTeam: React.FC<UpdateTeamProps> = ({ teamId, onUpdateSuccess }) => {
+const UpdateTeam: React.FC<UpdateTeamProps> = ({ teamId, onUpdateSuccess, onCancel }) => {
     const [projectname, setProjectname] = useState('');
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
@@ -47,36 +48,48 @@ const UpdateTeam: React.FC<UpdateTeamProps> = ({ teamId, onUpdateSuccess }) => {
     };
 
     return (
-        <div className="p-4 border rounded-lg shadow-md bg-white max-w-md mx-auto">
-            <h2 className="text-xl font-bold mb-4">Update Team</h2>
-            <form onSubmit={handleUpdate}>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Project Name</label>
-                    <input
-                        type="text"
-                        value={projectname}
-                        onChange={(e) => setProjectname(e.target.value)}
-                        className="w-full px-3 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Description</label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full px-3 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    disabled={loading}
-                >
-                    {loading ? 'Updating...' : 'Update Team'}
-                </button>
-            </form>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="p-6 border rounded-lg shadow-lg bg-white max-w-md w-full mx-auto">
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">Update Team</h2>
+                <form onSubmit={handleUpdate}>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-medium mb-2">Project Name</label>
+                        <input
+                            type="text"
+                            value={projectname}
+                            onChange={(e) => setProjectname(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            required
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-medium mb-2">Description</label>
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            rows={4}
+                            required
+                        />
+                    </div>
+                    <div className="flex justify-between gap-2">
+                        <button
+                            type="button"
+                            onClick={onCancel} // Call the cancel function
+                            className="w-1/2 py-2   border-[2px] text-gray-800 font-semibold hover:bg-gray-400 hover:text-white hover:border-gray-400 transition"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className={`w-1/2 py-2 bg-gray-300 border-gray-300 border-[2px] ${loading ? 'bg-gray-300' : 'hover:bg-gray-500 hover:text-white hover:border-gray-500'} transition`}
+                            disabled={loading}
+                        >
+                            {loading ? 'Updating...' : 'Update Team'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
