@@ -144,7 +144,7 @@ export async function middleware(request: NextRequest) {
                 return NextResponse.next(); // Allow access to TeamLeader paths
             } else {
                 // Redirect TeamLeader if trying to access non-TeamLeader admin paths
-                return NextResponse.redirect(new URL('/admin/teamleader/pages/home', request.nextUrl));
+                return NextResponse.redirect(new URL('/admin/teamleader/pages/dashboard', request.nextUrl));
             }
         }
 

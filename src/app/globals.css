@@ -53,6 +53,7 @@ body {
   /* Center the loader */
 }
 
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -61,4 +62,14 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }

@@ -1,4 +1,5 @@
 // app/components/Footer.jsx
+'use client'
 import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 

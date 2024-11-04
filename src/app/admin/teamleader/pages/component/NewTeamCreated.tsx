@@ -1,16 +1,15 @@
+'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie
+import toast, { Toaster } from 'react-hot-toast';
 
 interface TeamFormProps {
-    onTeamCreated: (newTeamId: string) => void; // Define the type of the prop
+    onTeamCreated: (newTeamId: string) => void;
 }
 
 const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
     const [projectName, setProjectName] = useState('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,8 +22,6 @@ const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setError('');
-        setSuccess('');
 
         try {
             const response = await axios.post('/api/admin/teamleader/teamnamecreate/', {
@@ -32,22 +29,23 @@ const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
                 description,
             });
 
-            console.log("API Response:", response.data); // Log the entire response
+            console.log("API Response:", response.data);
 
-            // Ensure the response contains the expected teamId
             const newTeamId = response.data.teamId;
             if (!newTeamId) {
                 throw new Error("Team ID is not returned from the server");
             }
 
-            setSuccess('Team created successfully!');
+            // Show success toast
+            toast.success('Team created successfully!');
             setProjectName('');
             setDescription('');
-            onTeamCreated(newTeamId); // Call the onTeamCreated prop with the new team ID
+            onTeamCreated(newTeamId);
 
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Error creating team');
-            console.error("Error:", err); // Log the error for further debugging
+            // Show error toast
+            toast.error(err.response?.data?.message || 'Error creating team');
+            console.error("Error:", err);
         } finally {
             setIsLoading(false);
         }
@@ -55,6 +53,7 @@ const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
 
     return (
         <>
+            <Toaster position="top-right" reverseOrder={false} />
             <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded-lg shadow-md">
                 {isFormOpen && (
                     <>
@@ -87,19 +86,17 @@ const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
                             </div>
                             <button
                                 type="submit"
-                                className={`w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`w-full bg-gray-400 text-white font-semibold py-2 px-4 hover:bg-gray-600 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 disabled={isLoading}
                             >
                                 {isLoading ? 'Creating...' : 'Create Team'}
                             </button>
                         </form>
-                        {success && <p className="text-green-500 text-center mt-4">{success}</p>}
-                        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
                     </>
                 )}
                 <button
                     onClick={() => setIsFormOpen(!isFormOpen)}
-                    className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 mb-4"
+                    className="w-full border-[1px] text-black font-semibold py-2 px-4 hover:bg-gray-600 mb-4 mt-2 hover:text-white"
                 >
                     {isFormOpen ? 'Cancel' : 'Create Team'}
                 </button>

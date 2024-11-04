@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import TeamForm from '../component/NewTeamCreated';
 import TeamLeaderAdminMainLayout from '@/app/components/teamleader/TeamLreaderadminLayout';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface User {
     _id: string;
@@ -17,26 +18,35 @@ export default function TeamLeaderDashboard() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [addedUsers, setAddedUsers] = useState<Set<string>>(new Set());
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [teamId, setTeamId] = useState<string | null>(null);
     const [isAdding, setIsAdding] = useState(false);
+    const departments = ['Developer', 'Designer', 'Tester', 'Markating', 'Others'];
 
-    const departments = ['Developer', 'Designer', 'Tester', 'Marketing', 'Others'];
-
-    // Retrieve the team ID from cookies when the component mounts
+    // Retrieve the team ID from sessionStorage when the component mounts
     useEffect(() => {
-        const storedTeamId = Cookies.get('teamId');
+        const storedTeamId = sessionStorage.getItem('teamId');
         setTeamId(storedTeamId || null);
     }, []);
 
     const fetchUsersByDepartment = async (dept: string) => {
         setLoading(true);
-        setError(null);
+        setError(null); // Clear any previous error
+
         try {
             const res = await axios.get(`/api/admin/teamleader/${dept}`);
+
+            // if (res.data.length > 0 && res.data[0]._id) {
+            //     const firstUserId = res.data[0]._id;
+            sessionStorage.setItem('userId', res.data[0]._id); // Store the user ID as a string
+            //     console.log(`User ID stored in session storage: ${firstUserId}`); // For debugging
+            // }
+
             setUsers(res.data);
         } catch (error: any) {
-            setError(error.response?.data?.message || "Could not fetch users. Please try again later.");
+            const errorMessage = error.response?.data?.message || "Could not fetch users. Please try again later.";
+            toast.error(errorMessage);
+            setError(errorMessage); // Set error state
+            console.error("Error fetching users:", error);
         } finally {
             setLoading(false);
         }
@@ -44,19 +54,16 @@ export default function TeamLeaderDashboard() {
 
     const handleUserAdd = async (userId: string) => {
         if (!teamId) {
-            setError('No Team ID available. Please select a team.');
+            toast.error('No Team ID available. Please select a team.');
             return;
         }
 
         if (addedUsers.has(userId)) {
-            setError('This user has already been added.');
+            toast.error('This user has already been added.');
             return;
         }
 
-        setSuccessMessage(null);
-        setError(null);
-        setIsAdding(true);
-
+        setIsAdding(true); // Set loading state for adding user
         try {
             const response = await axios.post(`/api/admin/teamleader/teamleadercontrollers/`, {
                 userId: userId,
@@ -64,17 +71,18 @@ export default function TeamLeaderDashboard() {
             });
 
             if (response.data.success) {
-                setSuccessMessage('Member added successfully!');
-                setAddedUsers((prev) => new Set(prev).add(userId));
+                toast.success("Member added successfully!");
+                setAddedUsers(prev => new Set(prev).add(userId));
+
             } else {
-                throw new Error(response.data.message || 'Failed to add member');
+                toast.error(response.data.message || 'Failed to add member');
             }
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
-            setError(errorMessage);
+            toast.error(errorMessage);
             console.error("Error adding user:", error);
         } finally {
-            setIsAdding(false);
+            setIsAdding(false); // Reset loading state
         }
     };
 
@@ -85,7 +93,7 @@ export default function TeamLeaderDashboard() {
                     <TeamForm onTeamCreated={setTeamId} />
                 </div>
             </section>
-
+            <Toaster position="top-right" reverseOrder={false} />
             <div className="flex flex-col md:flex-row p-6 w-full mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
                 <div className="w-full md:w-1/4 pr-4 border-r md:border-gray-200 md:mr-4 mb-4 md:mb-0">
                     <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Team Leader</h1>
@@ -106,16 +114,15 @@ export default function TeamLeaderDashboard() {
                     {loading ? (
                         <div className="flex items-center justify-center">
                             <div className="spinner" aria-label="Loading users..."></div>
-                            <span className="ml-2 text-gray-600">Loading users...</span>
+                            <span className="ml-2 text-gray-600"></span>
                         </div>
                     ) : error ? (
                         <p className="text-center text-red-500">{error}</p>
+                    ) : users.length === 0 ? (
+                        <p className="text-center text-gray-500">No users found for this department.</p>
                     ) : (
                         <div className="p-4">
-                            {successMessage && (
-                                <p className="text-center text-green-600 mb-4 font-semibold text-lg">{successMessage}</p>
-                            )}
-                            <ul className="bg-white">
+                            <ul className="bg-white overflow-y-auto">
                                 {users.map((user) => (
                                     <li key={user._id} className="flex justify-between items-center p-4 border-b border-gray-200 hover:bg-gray-50 transition duration-300 ease-in-out border-[1px] mb-2 rounded-xl">
                                         <div className="flex flex-col">
@@ -128,9 +135,9 @@ export default function TeamLeaderDashboard() {
                                             onClick={() => handleUserAdd(user._id)}
                                             disabled={addedUsers.has(user._id) || isAdding}
                                             className={`ml-4 px-4 py-2 rounded-lg transition duration-300 ease-in-out 
-                        ${addedUsers.has(user._id)
+                                             ${addedUsers.has(user._id)
                                                     ? 'bg-green-500 cursor-not-allowed text-white shadow-sm'
-                                                    : 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg'
+                                                    : 'bg-gray-400 hover:bg-gray-600 text-white shadow-lg'
                                                 }`}
                                         >
                                             {addedUsers.has(user._id) ? 'Added' : 'Add'}
@@ -139,7 +146,6 @@ export default function TeamLeaderDashboard() {
                                 ))}
                             </ul>
                         </div>
-
                     )}
                 </div>
             </div>

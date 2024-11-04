@@ -51,7 +51,7 @@ const LoginPage = () => {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login/", user);
-            console.log("Login successful!", response.data);
+            // console.log("Login successful!", response.data);
             Swal.fire({
                 icon: 'success',
                 title: 'Login Successful!',

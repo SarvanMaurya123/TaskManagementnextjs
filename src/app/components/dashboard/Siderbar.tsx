@@ -19,13 +19,13 @@ import Image from 'next/image'
 
 
 export default function Sidebar() {
-    const [activeItem, setActiveItem] = useState('Tasks')
+    const [activeItem, setActiveItem] = useState('dashboard')
     const [isOpen, setIsOpen] = useState(true)
 
     const toggleSidebar = () => setIsOpen(!isOpen)
 
     const menuItems = [
-        { name: 'Home', icon: Home, href: '/admin/home' },
+        // { name: 'Home', icon: Home, href: '/admin/home' },
         { name: 'Dashboard', icon: LayoutDashboard, href: '/admin/dashboard' },
         { name: 'Projects', icon: FolderClosed, href: '/projects' },
         { name: 'Tasks', icon: ListTodo, href: '/tasks' },
@@ -110,7 +110,7 @@ export default function Sidebar() {
                     <div className="p-4 border-t border-gray-800">
                         <button className="flex items-center w-full text-left">
                             <Image
-                                src="/placeholder.svg?height=32&width=32"
+                                src=""
                                 alt="User avatar"
                                 width={32}
                                 height={32}

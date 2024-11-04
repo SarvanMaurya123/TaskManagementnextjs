@@ -1,5 +1,5 @@
 import { connect } from "@/app/dbConfig/dbConfig";
-import Users from "@/app/models/userModule.js";
+import Users from "@/app/models/userModule";
 import bcryptjs from "bcryptjs";
 import { NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production", // Set secure based on environment
             expires: new Date(Date.now() + 60 * 60 * 1000) // 1 hour expiry
         })
         return response;

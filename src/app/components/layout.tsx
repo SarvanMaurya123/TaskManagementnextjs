@@ -12,8 +12,10 @@ export default function Layout({ children }: LayoutProps) {
         <div className="flex h-screen overflow-hidden">
             <Header />
             <div className="flex-1 flex flex-col overflow-x-auto">
-                <main className="flex-1 p-6 bg-gray-100">{children}</main>
-                <footer className="bg-blue-600 text-white text-center p-4">
+                <main className="flex-1 p-6 bg-gray-100 bg-white">
+                    {children}
+                </main>
+                <footer className="bg-gray-600 text-white text-center p-4">
                     &copy; {new Date().getFullYear()} My Application. All rights reserved.
                 </footer>
             </div>

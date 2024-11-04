@@ -19,30 +19,36 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a password"],
     },
+    isActive: {
+        type: Boolean,
+        default: false, // New users are active by default
+    },
     isVerify: {
         type: Boolean,
-        default: false,
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false,
+        default: true,
     },
     role: {
         type: String,
         enum: ['user', 'admin'],
         default: 'user',
     },
-
     department: {
         type: String,
-        enum: ['Developer', 'Designer', 'Tester', 'Marketing', 'Others'],
+        enum: ['Developer', 'Designer', 'Tester', 'Markating', 'Others'],
         default: 'Developer',
     },
-
     forgetPasswordToken: String,
     forgetPasswordTokenExpiry: Date,
     verifyToken: String,
     verifyTokenExpiry: Date,
+    createdAt: {
+        type: Date,
+        default: Date.now, // Automatically sets the creation date to now
+    },
+    tasks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tasks"
+    }],
 });
 
 userSchema.methods.createPasswordResetToken = function () {

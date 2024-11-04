@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, { params }: { params: { department: 
     }
 
     // Validate the department parameter to ensure it's a valid department
-    const validDepartments = ['Developer', 'Designer', 'Tester', 'Marketing', 'Others'];
+    const validDepartments = ['Developer', 'Designer', 'Tester', 'Markating', 'Others'];
     if (!validDepartments.includes(department)) {
         return NextResponse.json({ message: "Invalid department specified" }, { status: 400 });
     }
