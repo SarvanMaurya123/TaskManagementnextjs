@@ -61,7 +61,7 @@ export default function Sidebar() {
     const navItems = [
         { name: 'Home', icon: <FaHome />, path: '/' },
         { name: 'Tasks', icon: <BiTask />, path: `/components/usertaskfront/${user?._id}/` },
-        { name: 'Dashboard', icon: <FaTachometerAlt />, path: '/dashboard' },
+        // { name: 'Dashboard', icon: <FaTachometerAlt />, path: '/dashboard' },
         { name: 'Profile', icon: <FaUser />, path: '/profile' },
     ];
 

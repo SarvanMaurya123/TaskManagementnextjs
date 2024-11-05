@@ -105,9 +105,10 @@ const SimpleTaskModal: React.FC<SimpleTaskModalProps> = ({
     return (
         <>
             <Toaster position="top-right" reverseOrder={false} />
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-                <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
-                    <h2 className="text-2xl font-bold mb-6 text-gray-800">Create Task for {assignedUserName}</h2>
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-500 
+            bg-opacity-50 z-50">
+                <form onSubmit={handleSubmit} className="bg-white pt-2 p-8 rounded-lg shadow-lg w-full max-w-[500px]">
+                    <h2 className="text-xl text-center font-bold mb-6 text-gray-800"> {assignedUserName}</h2>
 
                     <div className="mb-6">
                         <label className="block mb-1 text-gray-700" htmlFor="title">Title</label>

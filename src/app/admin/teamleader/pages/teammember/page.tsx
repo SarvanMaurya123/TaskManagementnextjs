@@ -19,10 +19,9 @@ export default function TeamLeaderDashboard() {
     const [error, setError] = useState<string | null>(null);
     const [addedUsers, setAddedUsers] = useState<Set<string>>(new Set());
     const [teamId, setTeamId] = useState<string | null>(null);
-    const [isAdding, setIsAdding] = useState(false);
+    const [isAdding, setIsAdding] = useState<string | null>(null); // Track specific user being added
     const departments = ['Developer', 'Designer', 'Tester', 'Markating', 'Others'];
 
-    // Retrieve the team ID from sessionStorage when the component mounts
     useEffect(() => {
         const storedTeamId = sessionStorage.getItem('teamId');
         setTeamId(storedTeamId || null);
@@ -30,23 +29,15 @@ export default function TeamLeaderDashboard() {
 
     const fetchUsersByDepartment = async (dept: string) => {
         setLoading(true);
-        setError(null); // Clear any previous error
-
+        setError(null);
         try {
             const res = await axios.get(`/api/admin/teamleader/${dept}`);
-
-            // if (res.data.length > 0 && res.data[0]._id) {
-            //     const firstUserId = res.data[0]._id;
-            sessionStorage.setItem('userId', res.data[0]._id); // Store the user ID as a string
-            //     console.log(`User ID stored in session storage: ${firstUserId}`); // For debugging
-            // }
-
+            sessionStorage.setItem('userId', res.data[0]._id);
             setUsers(res.data);
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || "Could not fetch users. Please try again later.";
             toast.error(errorMessage);
-            setError(errorMessage); // Set error state
-            console.error("Error fetching users:", error);
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -63,7 +54,7 @@ export default function TeamLeaderDashboard() {
             return;
         }
 
-        setIsAdding(true); // Set loading state for adding user
+        setIsAdding(userId); // Set loading state for adding user
         try {
             const response = await axios.post(`/api/admin/teamleader/teamleadercontrollers/`, {
                 userId: userId,
@@ -73,16 +64,14 @@ export default function TeamLeaderDashboard() {
             if (response.data.success) {
                 toast.success("Member added successfully!");
                 setAddedUsers(prev => new Set(prev).add(userId));
-
             } else {
                 toast.error(response.data.message || 'Failed to add member');
             }
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
             toast.error(errorMessage);
-            console.error("Error adding user:", error);
         } finally {
-            setIsAdding(false); // Reset loading state
+            setIsAdding(null); // Reset loading state
         }
     };
 
@@ -133,14 +122,14 @@ export default function TeamLeaderDashboard() {
 
                                         <button
                                             onClick={() => handleUserAdd(user._id)}
-                                            disabled={addedUsers.has(user._id) || isAdding}
+                                            disabled={addedUsers.has(user._id) || isAdding === user._id}
                                             className={`ml-4 px-4 py-2 rounded-lg transition duration-300 ease-in-out 
                                              ${addedUsers.has(user._id)
                                                     ? 'bg-green-500 cursor-not-allowed text-white shadow-sm'
                                                     : 'bg-gray-400 hover:bg-gray-600 text-white shadow-lg'
                                                 }`}
                                         >
-                                            {addedUsers.has(user._id) ? 'Added' : 'Add'}
+                                            {addedUsers.has(user._id) ? 'Added' : isAdding === user._id ? 'Adding...' : 'Add'}
                                         </button>
                                     </li>
                                 ))}

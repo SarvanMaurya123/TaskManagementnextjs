@@ -3,16 +3,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import {
     Search,
-    Home,
     LayoutDashboard,
     FolderClosed,
     Bell,
-    HelpCircle,
     Settings,
     ChevronDown,
-    CalendarCheck2,
     Menu,
     X,
+    LogOut // Import the LogOut icon
 } from 'lucide-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -23,12 +21,11 @@ export default function TeamLeaderSidebar() {
     const [isOpen, setIsOpen] = useState(true);
     const router = useRouter();
 
-    const toggleSidebar = () => setIsOpen(!isOpen);
+    const toggleSidebar = () => setIsOpen(prev => !prev);
 
     const menuItems = [
         { name: 'Dashboard', icon: LayoutDashboard, href: '/admin/teamleader/pages/dashboard' },
         { name: 'Team Members', icon: FolderClosed, href: '/admin/teamleader/pages/teammember' },
-        { name: 'Task', icon: CalendarCheck2, href: '/admin/teamleader/pages/task' },
     ];
 
     const secondaryItems = [
@@ -52,13 +49,18 @@ export default function TeamLeaderSidebar() {
     };
 
     return (
-        <div className={`flex ${isOpen ? 'w-64' : 'w-25'} h-full bg-gray-900 text-gray-100 transition-all duration-300`}>
+        <div className={`flex ${isOpen ? 'w-64' : 'w-20'} h-full bg-gray-900 text-gray-100 transition-all duration-300`}>
             <div className="flex flex-col h-full w-full p-2">
                 <div className="p-4 flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         {isOpen && <span className="text-xl font-semibold">&#60;SM/&#62;</span>}
                     </div>
-                    <button onClick={toggleSidebar} aria-label="Toggle Sidebar" className="text-gray-100 focus:outline-none">
+                    <button
+                        onClick={toggleSidebar}
+                        aria-label="Toggle Sidebar"
+                        aria-expanded={isOpen}
+                        className="text-gray-100 focus:outline-none"
+                    >
                         {isOpen ? <X size={30} /> : <Menu size={30} />}
                     </button>
                 </div>
@@ -128,15 +130,18 @@ export default function TeamLeaderSidebar() {
                         </button>
                     </div>
                 )}
+                {isOpen && (
+                    <div className="p-4">
+                        <button
+                            onClick={logout}
+                            className="flex items-center w-full px-4 py-2 text-left transition duration-300 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                        >
 
-                <div className="p-4">
-                    <button
-                        onClick={logout}
-                        className="flex items-center w-full px-4 py-2 text-left transition duration-300 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                    >
-                        LogOut Now
-                    </button>
-                </div>
+                            <LogOut size={20} className="mr-2" /> {/* Add the LogOut icon here */}
+                            LogOut Now
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

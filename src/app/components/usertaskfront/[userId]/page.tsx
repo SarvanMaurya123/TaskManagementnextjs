@@ -96,13 +96,13 @@ const UserTasks = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4 text-center">Your Tasks</h1>
+            <h1 className="text-2xl font-bold mb-4 text-center mb-7">Your Tasks</h1>
 
-            <div className="mb-4 text-center">
+            <div className="mb-4 text-center mt-4 mb-4">
                 {['All', 'Pending', 'In Progress', 'Completed'].map(status => (
                     <button
                         key={status}
-                        className={`mx-2 p-2 ${selectedStatus === status ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                        className={`mx-2 p-3 px-7 rounded ${selectedStatus === status ? 'bg-gray-500 text-white' : 'bg-gray-200'}`}
                         onClick={() => setSelectedStatus(status)}
                     >
                         {status}
@@ -133,9 +133,11 @@ const UserTasks = () => {
                                 </div>
                             )}
                             <div className="mt-2 md:flex md:justify-between pt-5">
+
                                 <span className={`inline-block text-md font-medium ${task.status === 'Completed' ? 'text-green-600' : task.status === 'In Progress' ? 'text-blue-600' : 'text-red-600'}`}>
                                     {task.status}
                                 </span>
+
                                 <span className={`inline-block text-md font-medium ml-4 ${task.priority === 'High' ? 'text-red-600' : task.priority === 'Medium' ? 'text-yellow-600' : 'text-green-600'}`}>
                                     {task.priority}
                                 </span>
@@ -165,7 +167,13 @@ const UserTasks = () => {
                                     </button>
                                 )}
                             </div>
-                            <p className="mt-1 text-gray-500 text-center">{new Date(task.deadline).toLocaleDateString()}</p>
+                            <div className='text-center mt-4'>
+                                <p className="text-gray-500 text-lg">Deadline:</p>
+                                <p className="mt-1 text-gray-700 font-semibold text-xl text-red-600">
+                                    {new Date(task.deadline).toLocaleDateString()}
+                                </p>
+                            </div>
+
                         </div>
                     ))}
                 </div>

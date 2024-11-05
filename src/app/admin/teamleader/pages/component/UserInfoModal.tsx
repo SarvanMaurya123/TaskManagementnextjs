@@ -1,10 +1,11 @@
-'use client'
+// UserInfoModal.tsx
+'use client';
 import React, { useState } from 'react';
 import { FaComments, FaUserCircle } from 'react-icons/fa';
-import Link from 'next/link';
 import SendChat from '@/app/admin/teamleader/pages/component/TeamChat';
 import SinglePersonChat from '@/app/admin/teamleader/pages/component/SinglePersonChat';
 import SimpleTaskModal from '@/app/admin/teamleader/pages/component/SendTask';
+import PendingTask from '@/app/admin/teamleader/pages/component/PandingTask';
 
 interface Member {
     userId: string;
@@ -23,6 +24,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, onClose, member }
     const [isChatModalOpen, setChatModalOpen] = useState(false);
     const [isSingleChatModalOpen, setSingleChatModalOpen] = useState(false);
     const [isSendTask, setSendTask] = useState(false);
+    const [isPanding, setPandingTask] = useState(false);
 
     const handleTaskSubmit = (title: string, description: string) => {
         console.log('Task Created:', { title, description });
@@ -32,14 +34,8 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, onClose, member }
     if (!isOpen || !member) return null;
 
     return (
-        <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            aria-hidden={!isOpen}
-            aria-modal={isOpen}
-            role="dialog"
-            aria-labelledby="user-info-title"
-        >
-            <div className="bg-white p-6 rounded-lg shadow-lg md:max-w-3xl max-w-md w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+            <div className="bg-white p-6 rounded-lg shadow-lg md:max-w-2xl max-w-md w-full">
                 <div className="flex justify-center mb-4">
                     <FaUserCircle className="text-blue-600" size={100} />
                 </div>
@@ -51,29 +47,26 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, onClose, member }
 
                 <div className="mt-6 p-6 bg-gray-100 rounded-lg shadow-lg">
                     <h3 className="text-xl font-semibold text-purple-600 mb-4">Tasks Overview</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
                         <button
-                            className="flex justify-between items-center bg-white p-4 rounded-lg shadow transform hover:scale-100 hover:shadow-lg"
+                            className="flex justify-center items-center bg-white p-4 rounded-lg shadow transform hover:scale-100 hover:shadow-lg"
                             onClick={() => setSendTask(true)}
                         >
                             Send Task
                         </button>
 
-                        <button className="flex justify-between items-center bg-white p-4 rounded-lg shadow transform hover:scale-100 hover:shadow-lg">
-                            Pending
+                        <button
+                            className="flex justify-center items-center bg-white p-4 rounded-lg shadow transform hover:scale-100 hover:shadow-lg"
+                            onClick={() => setPandingTask(true)}
+                        >
+                            View Tasks
                         </button>
-
-
-                        <button className="flex justify-between items-center bg-white p-4 rounded-lg shadow transform hover:scale-100 hover:shadow-lg">
-                            Completed
-                        </button>
-
                     </div>
                 </div>
 
                 <div className="mt-4 bg-gray-50 p-4 rounded-lg shadow-md ">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Chats</h3>
-                    <div className='flex justify-around'>
+                    <div className="flex justify-around">
                         <button
                             className="text-gray-700 flex items-center p-3 bg-white rounded-lg shadow transform hover:scale-105"
                             onClick={() => setChatModalOpen(true)}
@@ -109,6 +102,11 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, onClose, member }
                 />
             )}
 
+            <PendingTask
+                isOpen={isPanding}
+                onClose={() => setPandingTask(false)}
+                userId={member.userId} // Pass the userId to PendingTask
+            />
         </div>
     );
 };
