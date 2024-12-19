@@ -134,37 +134,37 @@ const SignUpPage = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">
-                    {loading ? <div className="spinner"></div> : "Sign Up Now"}
+                    {loading ? <div className="spinner dark:text-black"></div> : "Sign Up Now"}
                 </h2>
                 <form className="space-y-4" onSubmit={onSignUp}>
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="username" className="text-sm font-semibold">Username*</label>
+                        <label htmlFor="username" className="text-sm font-semibold dark:text-black">Username*</label>
                         <input
                             type="text"
                             id="username"
                             value={user.username}
                             placeholder="Enter User Name"
                             onChange={handleInputChange}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
                         />
                         {validationErrors.username && <p className="text-red-500 text-sm">{validationErrors.username}</p>}
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="email" className="text-sm font-semibold">Email*</label>
+                        <label htmlFor="email" className="text-sm font-semibold dark:text-black">Email*</label>
                         <input
                             type="email"
                             id="email"
                             value={user.email}
                             placeholder="Enter email"
                             onChange={handleInputChange}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
                         />
                         {validationErrors.email && <p className="text-red-500 text-sm">{validationErrors.email}</p>}
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="password" className="text-sm font-semibold">Password*</label>
+                        <label htmlFor="password" className="text-sm font-semibold dark:text-black">Password*</label>
                         <div className="relative">
                             <input
                                 type={passwordVisible ? "text" : "password"}
@@ -172,12 +172,12 @@ const SignUpPage = () => {
                                 value={user.password}
                                 placeholder="Enter password"
                                 onChange={handleInputChange}
-                                className="p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                                className="p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
                             />
                             <button
                                 type="button"
                                 onClick={togglePasswordVisibility}
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-600"
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 "
                             >
                                 {passwordVisible ? "Hide" : "Show"}
                             </button>
@@ -191,7 +191,7 @@ const SignUpPage = () => {
                             id="department"
                             value={user.department}
                             onChange={handleInputChange}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
                         >
                             <option value="" disabled>Select Department</option>
                             <option value="Developer">Developer</option>

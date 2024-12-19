@@ -104,7 +104,7 @@ const LoginPage = () => {
                             value={user.email}
                             placeholder="Enter email"
                             onChange={(e) => setUser({ ...user, email: e.target.value })}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 text-black dark:text-black"
                         />
                         {validationErrors.email && <p className="text-red-500 text-sm">{validationErrors.email}</p>}
                     </div>
@@ -117,7 +117,7 @@ const LoginPage = () => {
                             value={user.password}
                             placeholder="Enter password"
                             onChange={(e) => setUser({ ...user, password: e.target.value })}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 text-black dark:text-black"
                         />
                         <Link href="/forgetpassemail" className="text-right text-blue-400 mt-3 mb-3">
                             Forget Password

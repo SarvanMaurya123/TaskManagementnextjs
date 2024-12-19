@@ -14,7 +14,7 @@ export default function Sidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useUser();
-    //console.log("UserID", user?._id)
+    // console.log("UserID", user?._id)
 
     const logout = async () => {
         try {
@@ -61,7 +61,7 @@ export default function Sidebar() {
     const navItems = [
         { name: 'Home', icon: <FaHome />, path: '/' },
         { name: 'Tasks', icon: <BiTask />, path: `/components/usertaskfront/${user?._id}/` },
-        // { name: 'Dashboard', icon: <FaTachometerAlt />, path: '/dashboard' },
+        { name: 'Personal Chat', icon: <FaUser />, path: `/components/personalchat/${user?._id}/` }, // New entry for Personal Chat
         { name: 'Profile', icon: <FaUser />, path: '/profile' },
     ];
 
@@ -75,11 +75,11 @@ export default function Sidebar() {
                 {isOpen ? <FaTimes className="text-white" /> : <FaBars className="text-white" />}
             </button>
 
-            <aside className={`fixed top-0 left-0 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white w-64 p-6 shadow-2xl transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:w-64`}>
+            <aside className={`fixed top-0 left-0 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white w-64 p-6 shadow-2xl transition-transform z-50 duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:w-64`}>
                 <div className="flex items-center justify-between py-4 border-b border-gray-700">
                     <h1 className="text-3xl font-semibold text-purple-400 ml-10">&#60;SM/&#62;</h1>
                     <button className="text-gray-400 hover:text-purple-400 transition duration-300" onClick={toggleSidebar} aria-label="Close sidebar">
-                        <FaTimes />
+                        <FaTimes size={40} />
                     </button>
                 </div>
 

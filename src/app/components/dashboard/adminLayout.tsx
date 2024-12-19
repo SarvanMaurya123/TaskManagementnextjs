@@ -1,5 +1,5 @@
 // MainLayout.js
-
+'use client'
 import AdminSidebar from './Siderbar'
 import { ReactNode } from 'react';
 interface LayoutProps {

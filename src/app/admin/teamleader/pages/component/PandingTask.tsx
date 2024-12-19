@@ -47,7 +47,7 @@ const PendingTask: React.FC<PendingTaskProps> = ({ isOpen, onClose, userId }) =>
     }, [isOpen, userId]);
 
     // Render loading state
-    if (loading) return <div className="text-center">Loading tasks...</div>; // Optionally use a spinner
+    if (loading) return <div className="text-center"></div>;
 
     if (!isOpen) return null;
 
@@ -88,3 +88,6 @@ const PendingTask: React.FC<PendingTaskProps> = ({ isOpen, onClose, userId }) =>
 };
 
 export default PendingTask;
+
+
+

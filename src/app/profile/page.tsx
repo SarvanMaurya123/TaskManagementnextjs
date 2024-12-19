@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@/app/context/store';
 import { FaUser, FaEnvelope, FaCalendarAlt, FaEdit, FaSignOutAlt } from 'react-icons/fa';
@@ -13,35 +13,35 @@ const UserProfile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const router = useRouter()
+    const router = useRouter();
+
     useEffect(() => {
-        // Simulate loading user data
         if (!user) {
             setLoading(true);
         } else {
             setLoading(false);
-            // Populate fields with user data
             setUsername(user.username);
             setEmail(user.email);
         }
     }, [user]);
 
+    if (authLoading || loading) {
+        return (
+            <div className="flex items-center justify-center mt-10">
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-600" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <span className="ml-2 text-gray-600">Loading...</span>
+            </div>
+        );
+    }
 
-
-    if (authLoading || loading) return (
-        <div className="flex items-center justify-center mt-10">
-            <div className="spinner" aria-label="Loading user profile..."></div>
-            <span className="ml-2 text-gray-600">Loading...</span>
-        </div>
-    );
-
-    if (error) return <div>Error loading profile: {error}</div>;
+    if (error) return <div className="text-center text-red-600">Error loading profile: {error}</div>;
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('token'); // Retrieve the JWT from local storage or cookies
-
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('/api/users/update', {
                 method: 'PUT',
@@ -58,11 +58,11 @@ const UserProfile = () => {
                 throw new Error(data.error || 'Error updating user');
             }
 
-            console.log('User updated successfully:', data);
             setIsEditing(false); // Exit edit mode after successful update
+            Swal.fire('Success!', 'Profile updated successfully!', 'success');
         } catch (err) {
-            console.error('Failed to update user:', err);
             setError('Failed to update user. Please try again.');
+            console.error('Failed to update user:', err);
         }
     };
 
@@ -74,7 +74,7 @@ const UserProfile = () => {
                 icon: 'success',
                 title: 'Logged Out Successfully!',
                 text: 'You have logged out.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
             });
             router.push("/login");
         } catch (error: any) {
@@ -82,70 +82,71 @@ const UserProfile = () => {
                 icon: 'error',
                 title: 'Logout Failed',
                 text: error.response?.data?.message || 'An error occurred during logout.',
-                confirmButtonText: 'Try Again'
+                confirmButtonText: 'Try Again',
             });
             console.log(error.message);
         }
     };
+
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4 text-center">User Profile</h1>
+        <div className="container mx-auto p-6 md:p-12">
+            <h1 className="text-3xl font-semibold mb-6 text-center">User Profile</h1>
             <div className="flex justify-center">
-                <div className='border rounded-lg shadow-lg bg-white p-8 max-w-sm w-full'>
+                <div className="border rounded-lg shadow-lg bg-white p-8 w-full max-w-md">
                     <div className="flex flex-col items-center mb-6">
-                        <FaUser className="text-blue-600 w-[100px] h-[100px] mb-4" />
-                        <h2 className="text-xl font-semibold text-center">
-                            {user?.username || 'User Name'}
-                        </h2>
+                        <FaUser className="text-blue-600 w-24 h-24 mb-4 rounded-full bg-gray-100 p-4" />
+                        <h2 className="text-2xl font-semibold text-center">{user?.username || 'User Name'}</h2>
                         <p className="text-gray-600 flex items-center">
-                            <FaEnvelope className="mr-2 text-blue-600" /> {user?.email || 'user@example.com'}
-                        </p>
-                        <p className="text-gray-500 flex items-center">
-                            <FaCalendarAlt className="mr-2 text-blue-600" /> Joined: {new Date(user?.createdAt).toLocaleDateString()}
+                            <FaEnvelope className="mr-2 text-blue-600" />
+                            {user?.email || 'user@example.com'}
                         </p>
                     </div>
 
-                    <div className="flex justify-between mt-4">
+                    <div className="flex justify-between mt-6">
                         <button
                             onClick={() => setIsEditing(!isEditing)}
-                            className="flex items-center bg-blue-500 text-white px-8 py-3 rounded mx-2 hover:bg-blue-600 transition">
-                            <FaEdit className="mr-2" /> {/* Change margin-right to mr-2 for spacing */}
-                            <span>{isEditing ? 'Cancel' : 'Edit Profile'}</span> {/* Wrap text in a span for clarity */}
-                        </button>
-                        <button className="flex items-center bg-red-500 text-white p-2 rounded mx-2 hover:bg-red-600 transition"
-                            onClick={logout}
+                            className="flex items-center bg-blue-500 text-white px-6 py-3 rounded-lg mx-2 hover:bg-blue-600 transition"
                         >
-                            <FaSignOutAlt className="mr-2" /> {/* Change margin-right to mr-2 for spacing */}
-                            <span>Logout</span> {/* Wrap text in a span for clarity */}
+                            <FaEdit className="mr-2" />
+                            {isEditing ? 'Cancel' : 'Edit Profile'}
+                        </button>
+                        <button
+                            onClick={logout}
+                            className="flex items-center bg-red-500 text-white px-6 py-3 rounded-lg mx-2 hover:bg-red-600 transition"
+                        >
+                            <FaSignOutAlt className="mr-2" />
+                            Logout
                         </button>
                     </div>
 
-
                     {isEditing && (
-                        <form onSubmit={handleUpdate} className="mt-4">
-                            <div className="flex flex-col mb-4">
-                                <label htmlFor="username" className="mb-1">Username</label>
+                        <form onSubmit={handleUpdate} className="mt-6 space-y-4">
+                            <div className="flex flex-col">
+                                <label htmlFor="username" className="text-gray-700 mb-2">Username</label>
                                 <input
                                     type="text"
                                     id="username"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="p-2 border rounded"
+                                    className="p-3 border rounded-lg"
                                     required
                                 />
                             </div>
-                            <div className="flex flex-col mb-4">
-                                <label htmlFor="email" className="mb-1">Email</label>
+                            <div className="flex flex-col">
+                                <label htmlFor="email" className="text-gray-700 mb-2">Email</label>
                                 <input
                                     type="email"
                                     id="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="p-2 border rounded"
+                                    className="p-3 border rounded-lg"
                                     required
                                 />
                             </div>
-                            <button type="submit" className="bg-green-500 text-white p-2 rounded mx-2 hover:bg-green-600 transition">
+                            <button
+                                type="submit"
+                                className="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition"
+                            >
                                 Save Changes
                             </button>
                         </form>

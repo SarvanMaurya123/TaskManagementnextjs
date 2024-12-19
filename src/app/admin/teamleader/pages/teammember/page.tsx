@@ -17,7 +17,7 @@ export default function TeamLeaderDashboard() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [addedUsers, setAddedUsers] = useState<Set<string>>(new Set());
+    const [addedUsers, setAddedUsers] = useState(new Set<string>()); // Track added users
     const [teamId, setTeamId] = useState<string | null>(null);
     const [isAdding, setIsAdding] = useState<string | null>(null); // Track specific user being added
     const departments = ['Developer', 'Designer', 'Tester', 'Markating', 'Others'];
@@ -32,7 +32,6 @@ export default function TeamLeaderDashboard() {
         setError(null);
         try {
             const res = await axios.get(`/api/admin/teamleader/${dept}`);
-            sessionStorage.setItem('userId', res.data[0]._id);
             setUsers(res.data);
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || "Could not fetch users. Please try again later.";
@@ -54,7 +53,7 @@ export default function TeamLeaderDashboard() {
             return;
         }
 
-        setIsAdding(userId); // Set loading state for adding user
+        setIsAdding(userId);
         try {
             const response = await axios.post(`/api/admin/teamleader/teamleadercontrollers/`, {
                 userId: userId,
@@ -71,7 +70,7 @@ export default function TeamLeaderDashboard() {
             const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
             toast.error(errorMessage);
         } finally {
-            setIsAdding(null); // Reset loading state
+            setIsAdding(null);
         }
     };
 
