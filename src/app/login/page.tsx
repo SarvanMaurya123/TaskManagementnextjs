@@ -97,7 +97,7 @@ const LoginPage = () => {
                 </h2>
                 <form className="space-y-4" onSubmit={onLogin}>
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="email" className="text-sm font-semibold">Email*</label>
+                        <label htmlFor="email" className="text-sm font-semibold text-black">Email*</label>
                         <input
                             type="email"
                             id="email"
@@ -110,7 +110,7 @@ const LoginPage = () => {
                     </div>
 
                     <div className="flex flex-col space-y-2 relative">
-                        <label htmlFor="password" className="text-sm font-semibold">Password*</label>
+                        <label htmlFor="password" className="text-sm font-semibold text-black">Password*</label>
                         <input
                             type={passwordVisible ? "text" : "password"}
                             id="password"

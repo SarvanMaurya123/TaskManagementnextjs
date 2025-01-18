@@ -65,6 +65,8 @@ const GetTeams: React.FC = () => {
 
     const handleDeleteMember = async (userId: string, teamId: string) => {
         try {
+            const confirmDelete = window.confirm('Are you sure you want to delete this team?');
+            if (!confirmDelete) return;
             await axios.delete(`/api/admin/teamleader/teamuserdelete/${userId}`, {
                 data: { teamId }
             });

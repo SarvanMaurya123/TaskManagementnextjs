@@ -50,7 +50,7 @@ const UpdateTeam: React.FC<UpdateTeamProps> = ({ teamId, onUpdateSuccess, onCanc
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="p-6 border rounded-lg shadow-lg bg-white max-w-md w-full mx-auto">
+            <div className="p-6 border rounded-lg shadow-lg bg-white max-w-md w-full mx-auto text-black">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">Update Team</h2>
                 <form onSubmit={handleUpdate}>
                     <div className="mb-6">

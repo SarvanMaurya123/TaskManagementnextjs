@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
@@ -30,10 +31,16 @@ const DepartmentChart = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const controller = new AbortController();
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/admindashboard/chartdeveloper');
-                const data = response.data; // Access the response data
+                const response = await axios.get('/api/admindashboard/chartdeveloper', { signal: controller.signal });
+                const data = response.data;
+
+                if (!data.departmentCounts || !Array.isArray(data.departmentCounts)) {
+                    throw new Error('Invalid data format received.');
+                }
+
                 const labels = data.departmentCounts.map((dept: DepartmentCount) => dept._id);
                 const counts = data.departmentCounts.map((dept: DepartmentCount) => dept.count);
 
@@ -49,20 +56,34 @@ const DepartmentChart = () => {
                         },
                     ],
                 });
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                setError("Failed to fetch department data.");
+                setError(null);
+            } catch (error: any) {
+                if (axios.isCancel(error)) {
+                    console.log("Request canceled:", error.message);
+                } else {
+                    console.error("Error fetching data:", error);
+                    setError(error.message || "Failed to fetch department data.");
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+
+        return () => controller.abort();
+    }, [loading]); // Now refetches when `loading` is set to `true`
+
+    // Function to retry fetching data
+    const retryFetch = () => {
+        setLoading(true);
+        setError(null);
+        setChartData(null);
+    };
 
     const options = {
         responsive: true,
-        maintainAspectRatio: false, // Allow the chart to resize freely
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top' as const,
@@ -75,14 +96,24 @@ const DepartmentChart = () => {
     };
 
     return (
-        <div className="w-full h-72 md:h-96"> {/* Set responsive height */}
+        <div className="w-full h-72 md:h-96">
             {loading && (
                 <div className="flex items-center justify-center h-full">
-                    <div className="spinner" aria-label="Loading users..."></div>
-                    <span className="ml-2 text-gray-600"></span>
+                    <div className="loader"></div> {/* Placeholder for a real spinner */}
+                    <span className="ml-2 text-gray-600">Loading data...</span>
                 </div>
             )}
-            {error && <p className="text-red-500">{error}</p>}
+            {error && (
+                <div className="text-center">
+                    <p className="text-red-500">{error}</p>
+                    <button
+                        onClick={retryFetch}
+                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                    >
+                        Retry
+                    </button>
+                </div>
+            )}
             {chartData && <Bar data={chartData} options={options} />}
         </div>
     );

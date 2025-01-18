@@ -89,15 +89,15 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="container mx-auto p-6 md:p-12">
+        <div className="container mx-auto p-6 md:p-12 ">
             <h1 className="text-3xl font-semibold mb-6 text-center">User Profile</h1>
             <div className="flex justify-center">
                 <div className="border rounded-lg shadow-lg bg-white p-8 w-full max-w-md">
-                    <div className="flex flex-col items-center mb-6">
+                    <div className="flex flex-col items-center mb-6 text-black">
                         <FaUser className="text-blue-600 w-24 h-24 mb-4 rounded-full bg-gray-100 p-4" />
                         <h2 className="text-2xl font-semibold text-center">{user?.username || 'User Name'}</h2>
-                        <p className="text-gray-600 flex items-center">
-                            <FaEnvelope className="mr-2 text-blue-600" />
+                        <p className="text-gray-600 flex items-center text-black">
+                            <FaEnvelope className="mr-2 text-blue-600 " />
                             {user?.email || 'user@example.com'}
                         </p>
                     </div>

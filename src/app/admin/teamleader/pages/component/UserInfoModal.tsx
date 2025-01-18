@@ -33,7 +33,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, onClose, member }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
-            <div className="bg-white p-6 rounded-lg shadow-lg md:max-w-xl max-w-md w-full">
+            <div className="bg-white p-6 rounded-lg shadow-lg md:max-w-xl max-w-md w-full text-black">
                 <div className="flex justify-center mb-4">
                     <FaUserCircle className="text-blue-600" size={100} />
                 </div>

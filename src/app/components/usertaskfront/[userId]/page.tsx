@@ -69,6 +69,10 @@ const UserTasks = () => {
     };
 
     const deleteTask = async (taskId: string) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this task?");
+
+        if (!isConfirmed) return;
+
         try {
             const response = await fetch(`/api/users/alltask/delete/${taskId}`, {
                 method: 'DELETE',
@@ -102,15 +106,15 @@ const UserTasks = () => {
         <>
             <Toaster position="top-right" reverseOrder={false} />
             <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-4 text-center">Your Tasks</h1>
+                <h1 className="text-2xl font-bold mb-4 text-center text-black">Your Tasks</h1>
 
                 <div className="mb-4 text-center">
                     <div className="flex flex-wrap justify-center">
                         {['All', 'Pending', 'In Progress', 'Completed'].map(status => (
                             <button
                                 key={status}
-                                className={`mx-2 mb-2 p-3 px-7 rounded transition duration-300 ease-in-out transform ${selectedStatus === status
-                                    ? 'bg-gray-500 text-white'
+                                className={`mx-2 mb-2 p-3 px-7 text-black rounded transition duration-300 ease-in-out transform ${selectedStatus === status
+                                    ? 'bg-gray-500 text-black'
                                     : 'bg-gray-200'
                                     } sm:w-auto w-full md:w-40 hover:bg-gray-400`}
                                 onClick={() => setSelectedStatus(status)}
@@ -129,7 +133,7 @@ const UserTasks = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredTasks.map(task => (
                             <div key={task._id} className="border border-gray-300 rounded-lg p-4 shadow-lg bg-white transition-transform duration-300">
-                                <h2 className="text-xl font-semibold">{task.title}</h2>
+                                <h2 className="text-xl font-semibold text-black">{task.title}</h2>
                                 <p className="text-gray-700">{task.description}</p>
                                 {task.attachments && task.attachments.length > 0 && (
                                     <div className="mt-2">

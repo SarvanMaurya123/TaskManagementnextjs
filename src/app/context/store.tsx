@@ -6,12 +6,10 @@ interface User {
     username: string;
     email: string;
     isActive: boolean;
-    // Add any other relevant fields from your user model
 }
 
 interface UserContextType {
     user: User | null;
-    chatId: string | null; // Add chatId to the context
     loading: boolean;
     error: string | null;
 }
@@ -20,30 +18,28 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [chatId, setChatId] = useState<string | null>(null); // State for chatId
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                // Fetch user data from the backend
-                const response = await fetch('/api/users/contextgetuserdata/');
+                // Fetch user data; cookies will be sent automatically
+                const response = await fetch('/api/users/contextgetuserdata/', {
+                    credentials: 'include', // Ensure cookies are included
+                });
+
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Unauthorized: Please log in again');
+                    }
                     throw new Error('Failed to fetch user data');
                 }
+
                 const data = await response.json();
                 setUser(data);
-
-                // Fetch the associated chat data for the user
-                const chatResponse = await fetch(`/api/users/personalchat/getchatincontext/${data._id}`);
-                if (!chatResponse.ok) {
-                    throw new Error('Failed to fetch chat data');
-                }
-                const chatData = await chatResponse.json();
-                setChatId(chatData); // Assuming the response includes chatId
-            } catch (error) {
-                setError(error instanceof Error ? error.message : 'Unknown error');
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Unknown error');
             } finally {
                 setLoading(false);
             }
@@ -53,7 +49,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, chatId, loading, error }}>
+        <UserContext.Provider value={{ user, loading, error }}>
             {children}
         </UserContext.Provider>
     );
@@ -61,7 +57,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useUser = () => {
     const context = useContext(UserContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error('useUser must be used within a UserProvider');
     }
     return context;

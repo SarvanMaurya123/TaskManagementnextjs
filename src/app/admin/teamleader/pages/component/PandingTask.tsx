@@ -53,7 +53,7 @@ const PendingTask: React.FC<PendingTaskProps> = ({ isOpen, onClose, userId }) =>
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg shadow-lg max-w-2xl p-6 md:p-8 relative mx-4">
+            <div className="bg-white rounded-lg shadow-lg max-w-2xl p-6 md:p-8 relative mx-4 text-black">
                 <button onClick={onClose} className="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
                     <FaTimes size={20} />
                 </button>

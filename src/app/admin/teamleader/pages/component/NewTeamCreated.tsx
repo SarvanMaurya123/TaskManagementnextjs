@@ -54,7 +54,7 @@ const TeamForm: React.FC<TeamFormProps> = ({ onTeamCreated }) => {
     return (
         <>
             <Toaster position="top-right" reverseOrder={false} />
-            <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded-lg shadow-md">
+            <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded-lg shadow-md text-black">
                 {isFormOpen && (
                     <>
                         <h2 className="text-xl font-semibold mb-4">Create a Team</h2>

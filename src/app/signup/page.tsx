@@ -131,27 +131,27 @@ const SignUpPage = () => {
     }, [user, loading]);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md border-[1px]">
                 <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">
                     {loading ? <div className="spinner dark:text-black"></div> : "Sign Up Now"}
                 </h2>
                 <form className="space-y-4" onSubmit={onSignUp}>
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="username" className="text-sm font-semibold dark:text-black">Username*</label>
+                        <label htmlFor="username" className="text-sm font-semibold dark:text-black text-black">Username*</label>
                         <input
                             type="text"
                             id="username"
                             value={user.username}
                             placeholder="Enter User Name"
                             onChange={handleInputChange}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black text-black"
                         />
                         {validationErrors.username && <p className="text-red-500 text-sm">{validationErrors.username}</p>}
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="email" className="text-sm font-semibold dark:text-black">Email*</label>
+                        <label htmlFor="email" className="text-sm font-semibold dark:text-black text-black">Email*</label>
                         <input
                             type="email"
                             id="email"
@@ -164,7 +164,7 @@ const SignUpPage = () => {
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="password" className="text-sm font-semibold dark:text-black">Password*</label>
+                        <label htmlFor="password" className="text-sm font-semibold dark:text-black text-black">Password*</label>
                         <div className="relative">
                             <input
                                 type={passwordVisible ? "text" : "password"}
@@ -186,12 +186,12 @@ const SignUpPage = () => {
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="department" className="text-sm font-semibold">Department*</label>
+                        <label htmlFor="department" className="text-sm font-semibold text-black">Department*</label>
                         <select
                             id="department"
                             value={user.department}
                             onChange={handleInputChange}
-                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black"
+                            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[1px] focus:ring-orange-400 dark:text-black text-black"
                         >
                             <option value="" disabled>Select Department</option>
                             <option value="Developer">Developer</option>
